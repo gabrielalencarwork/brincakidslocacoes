@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     
     // ==========================================================================
@@ -124,4 +125,95 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ==========================================================================
+    // 6. INTERACTIVE TOY SLIDER / CAROUSEL
+    // ==========================================================================
+    const sliders = document.querySelectorAll('.slider-container');
+    
+    sliders.forEach(slider => {
+        const slides = slider.querySelectorAll('.slide');
+        const dots = slider.querySelectorAll('.slider-dots .dot');
+        const prevBtn = slider.querySelector('.prev-btn');
+        const nextBtn = slider.querySelector('.next-btn');
+        let currentSlide = 0;
+        
+        // Find initial active slide
+        slides.forEach((slide, idx) => {
+            if (slide.classList.contains('active')) {
+                currentSlide = idx;
+            }
+        });
+        
+        const showSlide = (index) => {
+            // Handle bounds
+            if (index < 0) {
+                index = slides.length - 1;
+            } else if (index >= slides.length) {
+                index = 0;
+            }
+            
+            // Deactivate current slide
+            const prevActiveSlide = slides[currentSlide];
+            if (prevActiveSlide) {
+                prevActiveSlide.classList.remove('active');
+                // If it's a video, pause it
+                if (prevActiveSlide.tagName === 'VIDEO') {
+                    prevActiveSlide.pause();
+                }
+            }
+            
+            // Deactivate current dot
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.remove('active');
+            }
+            
+            // Activate new slide
+            currentSlide = index;
+            const newActiveSlide = slides[currentSlide];
+            if (newActiveSlide) {
+                newActiveSlide.classList.add('active');
+                // If it's a video, play it
+                if (newActiveSlide.tagName === 'VIDEO') {
+                    newActiveSlide.play().catch(err => {
+                        console.log("Video play interrupted or blocked by browser: ", err);
+                    });
+                }
+            }
+            
+            // Activate new dot
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.add('active');
+            }
+        };
+        
+        // Navigation clicks
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSlide(currentSlide - 1);
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSlide(currentSlide + 1);
+            });
+        }
+        
+        // Dot clicks
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                if (!isNaN(slideIndex)) {
+                    showSlide(slideIndex);
+                }
+            });
+        });
+    });
 });
+Clicking...Pressing key...Stopping...
+
+Stop Agent
