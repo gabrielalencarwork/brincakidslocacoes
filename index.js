@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     
     // ==========================================================================
@@ -214,6 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-Clicking...Pressing key...Stopping...
+Pressing key...Clicking...Stopping...
 
 Stop Agent
